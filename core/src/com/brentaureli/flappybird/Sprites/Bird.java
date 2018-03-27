@@ -44,7 +44,7 @@ public class Bird {
     }
 
     public void jump(){
-        velocity.y = 250;
+        velocity.y =100;
     }
 
     public void updateBounds(){

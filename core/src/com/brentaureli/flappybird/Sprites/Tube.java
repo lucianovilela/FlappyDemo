@@ -24,10 +24,11 @@ public class Tube {
         topTube = new Texture("toptube.png");
         bottomTube = new Texture("bottomtube.png");
         rand = new Random();
-        posTopTube = new Vector2(x, rand.nextInt(FLUCTUATION) + LOWEST_OPENING + TUBE_GAP);
-        posBottomTube = new Vector2(x, posTopTube.y - TUBE_GAP - bottomTube.getHeight());
-        boundsTop = new Rectangle(posTopTube.x, posTopTube.y, topTube.getWidth(), topTube.getHeight());
+        //posTopTube = new Vector2(x, rand.nextInt(FLUCTUATION) + LOWEST_OPENING + TUBE_GAP);
+        posBottomTube = new Vector2(x, rand.nextInt(FLUCTUATION) -  TUBE_GAP- TUBE_WIDTH);
+        //boundsTop = new Rectangle(posTopTube.x, posTopTube.y, topTube.getWidth(), topTube.getHeight());
         boundsBottom = new Rectangle(posBottomTube.x, posBottomTube.y, bottomTube.getWidth(), bottomTube.getHeight());
+
     }
 
 
@@ -63,14 +64,14 @@ public class Tube {
         this.posBottomTube = posBottomTube;
     }
     public void reposition(float x){
-        posTopTube.set(x, rand.nextInt(FLUCTUATION) + LOWEST_OPENING + TUBE_GAP);
-        posBottomTube.set(x, posTopTube.y - TUBE_GAP - bottomTube.getHeight());
-        boundsTop.setPosition(x, posTopTube.y);
+       // posTopTube.set(x, rand.nextInt(FLUCTUATION) + LOWEST_OPENING + TUBE_GAP);
+        posBottomTube.set(x, rand.nextInt(FLUCTUATION) - TUBE_GAP - TUBE_WIDTH);
+       // boundsTop.setPosition(x, posTopTube.y);
         boundsBottom.setPosition(x, posBottomTube.y);
     }
 
     public boolean collides(Rectangle player){
-        return player.overlaps(boundsBottom) || player.overlaps(boundsTop);
+        return player.overlaps(boundsBottom) ;//|| player.overlaps(boundsTop);
     }
 
     public Rectangle getBoundsBottom(){

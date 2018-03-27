@@ -30,7 +30,7 @@ public class PlayState extends State {
 
     public PlayState(GameStateManager gsm){
         super(gsm);
-        bird = new Bird(40, 200);
+
         background = new Texture("bg.png");
         ground = new Texture("ground.png");
         gameoverImg = new Texture("gameover.png");
@@ -38,6 +38,7 @@ public class PlayState extends State {
         tubes = new Array<Tube>();
         for(int i = 1; i <= TUBE_COUNT; i++)
             tubes.add(new Tube(i * (TUBE_SPACING + Tube.TUBE_WIDTH)));
+        bird = new Bird((int) tubes.get(0).getPosBottomTube().x,(int) 240);
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
         gameover = false;
@@ -59,18 +60,23 @@ public class PlayState extends State {
         bird.update(dt);
         cam.position.set(bird.getX() + 80, cam.viewportHeight / 2, 0);
         for(Tube tube : tubes){
-            if(cam.position.x - cam.viewportWidth / 2 > tube.getPosTopTube().x + tube.getTopTube().getWidth()){
-                tube.reposition(tube.getPosTopTube().x +((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT));
+            if(cam.position.x - cam.viewportWidth / 2 > tube.getPosBottomTube().x + tube.getBottomTube().getWidth()){
+                tube.reposition(tube.getPosBottomTube().x +((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT));
             }
 
             if(tube.collides(bird.getBounds())){
-                bird.colliding = true;
-                gameover = true;
+
+                   System.out.println(bird.getY()+" " +tube.getBoundsBottom().getY() + tube.getBoundsBottom().getHeight() );
+                   if(bird.getY() == tube.getBoundsBottom().getY() + tube.getBoundsBottom().getHeight()) {
+
+                       bird.colliding = true;
+                   }
+                //gameover = true;
             }
         }
         if(bird.getY() <= ground.getHeight() + GROUND_Y_OFFSET){
-            gameover = true;
-            bird.colliding = true;
+           // gameover = true;
+           // bird.colliding = true;
         }
         cam.update();
     }
@@ -91,7 +97,7 @@ public class PlayState extends State {
         //System.out.println("X: " + groundPos1.x + " Y: " + groundPos1.y);
         for(Tube tube : tubes){
             sb.draw(tube.getBottomTube(), tube.getPosBottomTube().x, tube.getPosBottomTube().y);
-            sb.draw(tube.getTopTube(), tube.getPosTopTube().x, tube.getPosTopTube().y);
+           // sb.draw(tube.getTopTube(), tube.getPosTopTube().x, tube.getPosTopTube().y);
         }
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
