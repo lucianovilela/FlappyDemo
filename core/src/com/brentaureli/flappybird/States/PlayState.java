@@ -51,6 +51,7 @@ public class PlayState extends State {
             else
                 bird.jump();
         }
+
     }
 
     @Override
@@ -58,17 +59,21 @@ public class PlayState extends State {
         handleInput();
         updateGround();
         bird.update(dt);
-        cam.position.set(bird.getX() + 80, cam.viewportHeight / 2, 0);
+        cam.position.set(cam.position.x+1, cam.viewportHeight / 2, 0);
         for(Tube tube : tubes){
             if(cam.position.x - cam.viewportWidth / 2 > tube.getPosBottomTube().x + tube.getBottomTube().getWidth()){
                 tube.reposition(tube.getPosBottomTube().x +((Tube.TUBE_WIDTH + TUBE_SPACING) * TUBE_COUNT));
             }
 
+            if(bird.getX() > cam.viewportWidth){
+                bird.getBounds().setPosition(cam.viewportWidth, bird.getY());
+            }
+
             if(tube.collides(bird.getBounds())){
 
-                   System.out.println(bird.getY()+" " +tube.getBoundsBottom().getY() + tube.getBoundsBottom().getHeight() );
-                   if(bird.getY() == tube.getBoundsBottom().getY() + tube.getBoundsBottom().getHeight()) {
-
+                   System.out.println(bird.getY()+" " +(tube.getBoundsBottom().getY() + tube.getBoundsBottom().getHeight()) );
+                   if(bird.getY()+5 >= (tube.getBoundsBottom().getY() + tube.getBoundsBottom().getHeight())) {
+                       System.out.println("topo");
                        bird.colliding = true;
                    }
                 //gameover = true;
